@@ -48,14 +48,14 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-    var i;
+    var i, key;
 
     if(Array.isArray(collection)){   // If Collection is Array
       for(i = 0; i < collection.length; i++){
         iterator(collection[i], i, collection);
       }
     }else{
-      for(var key in collection){    // If Collection is Object
+      for(key in collection){    // If Collection is Object
         iterator(collection[key], key, collection);
       }
     }
@@ -160,6 +160,14 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
+    _.each(collection, function(item){
+      if(accumulator === undefined) accumulator = item;
+      else{
+        accumulator = iterator(accumulator, item);
+      }
+    });
+    
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
