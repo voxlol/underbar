@@ -306,6 +306,19 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // func takes only one primitive argument
+    var pairs = {};
+
+    return function(){
+      var argument = arguments[0];
+
+      if(argument in pairs) return pairs[argument];
+      else{  // do the computation
+        var result = func.apply(this,arguments);
+        pairs[argument] = result;
+        return result;
+      }
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
