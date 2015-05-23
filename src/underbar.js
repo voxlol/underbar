@@ -204,6 +204,21 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if(Array.isArray(collection) && collection.length === 0){   // if empty collection, get out
+      return false;
+    }
+
+    if(iterator === undefined){ // If undefined iterator, create one to check for existence
+      iterator = function(total, item){ 
+        return item ? total + 1 : total;
+      }
+    }
+
+    var count = _.reduce(collection, function(total, item){    // count start @ 0
+      return iterator(item) ? total + 1 : total;
+    }, 0);
+
+    return count > 0 ? true : false;
   };
 
 
